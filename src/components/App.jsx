@@ -9,28 +9,48 @@ import { Filter } from "./Filter/Filter";
 export const App = () => {
   
   const [contacts, setContact] = useState([])
-  const [filter, setFilter] = useState("")
+  const [setFilter] = useState("")
 
   useEffect(() => {
-    const savedContacts = JSON.parse(localStorage.getItem("Contacts_Local_Storage") || [])
-  })
+    const savedContacts = JSON.parse(localStorage.getItem("Contacts_Local_Storage") || "[]")
+    setContact(savedContacts)
+  }, [])
 
   useEffect(() => {
     if (contacts.length > 0) {
       localStorage.setItem("Local_Storage_Contacts", JSON.stringify(contacts))
+    } else {
+      localStorage.removeItem("Local_Storage_Contacts")
     }
-  }, [contacts]
-  )
+  }, [contacts])
+  
+  const newContact = (name, number) => {
+    const contactNames = contacts.map(contact => contact.name)
+
+    if (contactNames.includes(name)) {
+      console.log(`$P{name} is already in your Phonebook`)
+      return
+    }
+    setContact([...contacts, { id: nanoid(), name, number }])
+  }
+
+  const filterContacts = () => {
+    return contacts.filter(showContacts => showContacts.name)
+  }
+
+  const deleteContact = (id) => {
+    setContact(contacts.filter(contact => contact.id !== id))
+  }
+
+  const filterChange = value => setFilter(value)
 
     return (
       <div>
         <h1>Phonebook</h1>
-        <ContactForm onSubmit={this.newContact} />
+        <ContactForm onSubmit={newContact} />
         <h2>Contacts</h2>
-        <Filter value={this.state.filter} onChange={this.filterContacts} />
-        {/* {this.state.contacts.length > 0 && (<ContactList contacts={this.showContacts()} onClick={this.deleteContact} />)} */}
-        <ContactList contacts={this.showContacts()} onClick={this.deleteContact} />
-
+        <Filter onChange={filterChange} />
+        <ContactList contacts={filterContacts()} onClick={deleteContact} />
       </div>
     )
 }
