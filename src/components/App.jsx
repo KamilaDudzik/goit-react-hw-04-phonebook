@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { nanoid } from "nanoid";
+import Notiflix from "notiflix";
 
 import { ContactForm } from "./ContactForm/ContactForm";
 import { ContactList } from "./ContactList/ContactList";
@@ -28,10 +29,11 @@ export const App = () => {
     const contactNames = contacts.map(contact => contact.name)
 
     if (contactNames.includes(name)) {
-      console.log(`$P{name} is already in your Phonebook`)
+      Notiflix.Notify.info(`${name} is already in contacts`)
       return
     }
     setContact([...contacts, { id: nanoid(), name, number }])
+    Notiflix.Notify.success(`${name} added to contacts`)
   }
 
   const filterContacts = () => {
