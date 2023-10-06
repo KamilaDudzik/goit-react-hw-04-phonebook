@@ -10,7 +10,7 @@ import { Filter } from "./Filter/Filter";
 export const App = () => {
   
   const [contacts, setContact] = useState([])
-  const [setFilter] = useState("")
+  const [filter, setFilter] = useState("")
 
   useEffect(() => {
     const savedContacts = JSON.parse(localStorage.getItem("Contacts_Local_Storage") || "[]")
@@ -37,7 +37,7 @@ export const App = () => {
   }
 
   const filterContacts = () => {
-    return contacts.filter(showContacts => showContacts.name)
+    return contacts.filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase()))
   }
 
   const deleteContact = (id) => {
