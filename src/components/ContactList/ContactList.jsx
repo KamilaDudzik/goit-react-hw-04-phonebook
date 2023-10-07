@@ -7,6 +7,10 @@ export const ContactList = ({ contacts, onClick }) => {
     const deleteContact = (id) => {
         onClick(id)
     }
+
+  if (contacts.length === 0) {
+    return null
+  }
     
     return (
         <ul className={css.contactsList}>
